@@ -21,18 +21,18 @@ Sara Deschaine
 
 # ABSTRACT
 
-This study investigated whether house finches (Haemorhous mexicanus) act
-as important amplifying hosts of West Nile Virus (WNV) in Salt Lake
+In this study we explored whether house finches (Haemorhous mexicanus)
+act as important amplifying hosts of West Nile Virus (WNV) in Salt Lake
 City. Mosquitoes were collected using gravid and CO₂ traps, and
-bloodmeal sources were identified through PCR and gene sequencing.
-Bloodmeal analysis showed that house finches and house sparrows were the
-most frequent hosts, with house finches being dominant. Generalized
-linear models revealed a significant positive association between house
-finch bloodmeals and both the presence and infection rate of WNV in
-mosquito pools. These findings support the hypothesis that house finches
-serve as key amplifying hosts, contributing to higher rates of WNV
-transmission in local mosquito populations and highlighting their role
-in sustaining the WNV cycle in this region.
+bloodmeal sources were identified through PCR and gene sequencing. Blood
+meal analysis showed that house finches and house sparrows were the most
+frequent hosts, with house finches being dominant. Generalized linear
+models revealed a significant positive relationship between house finch
+blood meals and both the presence and infection rate of WNV in mosquito
+pools. These findings support my hypothesis that house finches serve as
+key amplifying hosts, contributing to higher rates of WNV transmission
+in local mosquito populations and highlighting their role in sustaining
+the WNV cycle in this region.
 
 # BACKGROUND
 
