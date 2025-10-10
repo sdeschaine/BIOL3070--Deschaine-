@@ -1,7 +1,7 @@
 Warm-up mini-Report: Mosquito Blood Hosts in Salt Lake City, Utah
 ================
 Sara Deschaine
-2025-10-09
+2025-10-10
 
 - [ABSTRACT](#abstract)
 - [BACKGROUND](#background)
@@ -140,10 +140,10 @@ source will show elevated rates of WNV-positive mosquito pools.
 
 We first organized the mosquito blood meal data by location and bird
 species, summing the number of feedings at sites with and without
-WNV-positive pools. This information allowed us to quantify how often
-mosquitoes fed on each host across different locations. By preparing the
-data this way, we could later compare host usage between WNV-positive
-and WNV-negative sites in a clear, structured manner.
+WNV-positive pools. By preparing the data this way, we could compare
+host usage between WNV-positive and WNV-negative sites in an organized
+way. This information then allowed us to quantify how often mosquitoes
+fed on each host across different locations.
 
 ## Barplots
 
@@ -343,20 +343,19 @@ accompanying plot.
 The second analysis used generalized linear models (GLMs) to test
 whether the number of house finch bloodmeals was associated with West
 Nile Virus (WNV) in mosquito pools. In the first model, with
-WNV-positive pools as the response variable (binomial family), the
-predictor variable host_House_finch had a positive and statistically
-significant effect (Estimate = 0.35, SE = 0.16, z = 2.19, p = 0.029).
-This indicates that locations with more mosquito bloodmeals from house
-finches were more likely to contain WNV-positive pools. In the second
-model, which used infection rate as the response (Gaussian family),
-house finch bloodmeal counts again showed a significant positive
-association (Estimate = 0.027, SE = 0.0067, t = 4.13, p \< 0.001).
-Together, these results support the prediction that house finches act as
-an important amplifying host: sites where mosquitoes feed more often on
-finches also tend to have higher WNV infection rates in mosquito
-populations. This pattern strengthens the conclusion that house finches
-may play a central role in maintaining and amplifying WNV transmission
-cycles in the study area.
+WNV-positive pools as the response variable, the predictor variable
+host_House_finch had a positive and statistically significant effect
+(Estimate = 0.35, SE = 0.16, z = 2.19, p = 0.029). This indicates that
+locations with more mosquito bloodmeals from house finches were more
+likely to contain WNV-positive pools. In the second model, which used
+infection rate as the response, house finch bloodmeal counts again
+showed a significant positive association (Estimate = 0.027, SE =
+0.0067, t = 4.13, p \< 0.001). Together, these results support the
+prediction that house finches act as an important amplifying host: sites
+where mosquitoes feed more often on finches also tend to have higher WNV
+infection rates in mosquito populations. This pattern strengthens the
+conclusion that house finches may play a central role in maintaining and
+amplifying WNV transmission cycles in the study area.
 
 # CONCLUSION
 
@@ -384,7 +383,7 @@ animals.
     <https://www.cdc.gov/advanced-molecular-detection/about/what-is-genomic-sequencing.html>
 
 3.  ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions
-    such as plot() and to correct syntax errors. Accessed 2025-10-09.
+    such as plot() and to correct syntax errors. Accessed 2025-10-10.
 
 4.  Komar N, Langevin S, Hinten S, Nemeth N, Edwards E, Hettler D, Davis
     B, Bowen R, Bunning M. Experimental infection of North American
