@@ -70,3 +70,50 @@ panel.grid.minor = element_blank()
 
 ```
 
+
+
+# Load needed packages
+library(ggplot2)
+library(stringi)
+library(dplyr)
+
+# Read in the data
+fireflies <- read.csv("Copy of firefliesUtah - Usable Data.csv", stringsAsFactors = FALSE)
+
+# Rename columns
+colnames(fireflies) <- c("firefly_count", "region")
+
+# Clean region names
+fireflies$region[fireflies$region == ""] <- NA
+fireflies$region <- stri_trans_general(fireflies$region, "NFKC")
+fireflies$region <- stri_replace_all_regex(fireflies$region, "\\p{C}", "")
+fireflies$region <- gsub("\u00A0", " ", fireflies$region)
+fireflies$region <- trimws(tolower(fireflies$region))
+fireflies$region[fireflies$region %in% c("n", "nrth", "noth")] <- "north"
+fireflies$region[fireflies$region %in% c("s", "sth", "soth")] <- "south"
+fireflies$region <- factor(fireflies$region, levels = c("north", "south"))
+
+fireflies_clean <- droplevels(subset(fireflies, !is.na(region)))
+
+# ----- REMOVE OUTLIERS ABOVE 50 -----
+fireflies_no_outliers <- fireflies_clean %>%
+  filter(firefly_count <= 50)
+
+# ----- LINEAR REGRESSION PLOT -----
+ggplot(fireflies_no_outliers, aes(x = region, y = firefly_count)) +
+  geom_jitter(width = 0.1, alpha = 0.6, color = "gray40") +
+  stat_summary(fun = mean, geom = "point", size = 4, color = "red") +
+  stat_summary(fun = mean, geom = "line", aes(group = 1), color = "red", linewidth = 1) +
+  labs(
+    title = "Firefly Abundance by Region",
+    x = "Region",
+    y = "Firefly Count"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5)
+  )
+
+# Linear model
+model <- lm(firefly_count ~ region, data = fireflies_no_outliers)
+summary(model)

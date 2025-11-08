@@ -1,7 +1,7 @@
 Warm-up mini-Report: Mosquito Blood Hosts in Salt Lake City, Utah
 ================
 Sara Deschaine
-2025-10-09
+2025-11-04
 
 - [ABSTRACT](#abstract)
 - [BACKGROUND](#background)
@@ -384,7 +384,7 @@ animals.
     <https://www.cdc.gov/advanced-molecular-detection/about/what-is-genomic-sequencing.html>
 
 3.  ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions
-    such as plot() and to correct syntax errors. Accessed 2025-10-09.
+    such as plot() and to correct syntax errors. Accessed 2025-11-04.
 
 4.  Komar N, Langevin S, Hinten S, Nemeth N, Edwards E, Hettler D, Davis
     B, Bowen R, Bunning M. Experimental infection of North American

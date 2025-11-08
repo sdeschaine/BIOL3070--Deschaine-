@@ -11,27 +11,35 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Absract
+# Abstract
+
+Fireflies are ecologically important insects that contribute to pollination, provide natural pest control, and serve as prey for other animals. This study compared firefly abundance between northern and southern Utah counties using citizen science observations. Visualizations suggested higher counts in northern counties, but a Welch two-sample t-test found the difference was not statistically significant (p = 0.2083). While the results hint at regional variation, further research with larger datasets is needed to confirm these patterns and inform conservation efforts.
 
 # Background
+
+Fireflies are an ecologically important group of insects because they contribute to pollination, are a natural pest control agent, and are a food source for other animals. Understanding more about fireflies, including where they are most abundant in local areas, provides insight into habitat quality and guides conservation efforts. In our study we hypothesize that northern counties in Utah will have a higher abundance in fireflies compared to south. Fireflies are bioluminescent beetles that use light signals for mating and communication, this makes them sensitive to environmental changes that affect light or habitat conditions (Evans et al., 2018). “Most fireflies need moisture to complete their life cycle, preventing desiccation of vulnerable immature stages and ensuring availability of their soft-bodied invertebrate prey. Because of their reliance on moisture, fireflies are typically found near permanent water sources.”(Lewis et al., 2024). Northern Utah generally has cooler, wetter habitats, while southern Utah is hotter and drier. This supports the idea that northern regions may provide better habitat conditions for fireflies. By examining regional differences in firefly abundance, this study helps reveal how climate and habitat conditions influence local insect populations.
 
 # Study Question and Hypothesis
 
 ## Question
+
 Do northern counties in Utah have a higher abundance of fireflies compared to southern counties?
 
 ## Hypothesis
-We hypothesize that northern counties in Utah will have a higher abundance in fireflies compared to south. 
+
+We hypothesize that northern counties in Utah will have a higher abundance of fireflies compared to southern counties, potentially due to differences in environmental conditions such as temperature, moisture, and habitat availability that are more favorable in the north. 
 
 ## Prediction
-If location influences firefly abundance, then northern counties in Utah will have more fireflies than southern counties.
 
-Possible test statistic: Two-sample t-test
+If geographic location affects firefly abundance, then northern counties in Utah will have a noticeably greater number of fireflies than southern counties, reflecting regional differences in suitable habitat and environmental conditions.
 
 # Methods
 
-## Plot
-explain plot here
+We obtained data from Fireflies Citizen Science in Logan, which compiles local firefly observation records. From this dataset, we extracted the relevant information on firefly abundance and county locations in Utah, which we then categorized into northern and southern regions. We drew a line from Juab County to Carbon County, defining everything north of the line as Northern Utah and everything south of it as Southern Utah. Using RStudio Cloud, we created two visualizations, a box plot and a violin plot which compared firefly abundance between the north and south. Finally, we conducted a t-test to determine whether the observed differences were statistically significant.
+
+## Box Plot
+
+We visualized the data using a box plot, this code specifically cleans up the firefly data from Utah, making sure the region names are consistent and getting rid of any missing or messy entries. It then organizes the data by north and south regions. Finally, it makes a box plot showing how firefly counts compare between the two regions, keeping the graph simple and easy to read as well as getting rid of any outliers.
 
 ```{r}
 # Firefly Boxplot
@@ -40,7 +48,7 @@ explain plot here
 library(ggplot2)
 library(stringi)
 
-# Read in the dad
+# Read in the data
 fireflies <- read.csv("Copy of firefliesUtah - Usable Data.csv", stringsAsFactors = FALSE)
 
 # Rename columns to simpler names
@@ -103,10 +111,99 @@ panel.grid.minor = element_blank()
 )
 ```
 
+## Violin Plot
+
+We also made a split violin plot to compare firefly counts in the north and south. The plot shows the distribution of counts on each side, with colors for each region and the y-axis capped at 50 to keep it readable.
+
+```{r}
+# Split Violin Plot (y-axis limited to 50)
+
+library(ggplot2)
+library(gghalves)
+library(stringi)
+
+# Read and clean your data
+fireflies <- read.csv("Copy of firefliesUtah - Usable Data.csv", stringsAsFactors = FALSE)
+colnames(fireflies) <- c("firefly_count", "region")
+
+fireflies$region[fireflies$region == ""] <- NA
+fireflies$region <- stri_trans_general(fireflies$region, "NFKC")
+fireflies$region <- stri_replace_all_regex(fireflies$region, "\\p{C}", "")
+fireflies$region <- gsub("\u00A0", " ", fireflies$region)
+fireflies$region <- trimws(tolower(fireflies$region))
+fireflies$region[fireflies$region %in% c("n", "nrth", "noth")] <- "north"
+fireflies$region[fireflies$region %in% c("s", "sth", "soth")] <- "south"
+fireflies$region <- factor(fireflies$region, levels = c("north", "south"))
+fireflies_clean <- droplevels(subset(fireflies, !is.na(region)))
+
+# Split violin plot
+ggplot() +
+  geom_half_violin(
+    data = subset(fireflies_clean, region == "north"),
+    aes(x = factor(1), y = firefly_count, fill = region),
+    side = "l", trim = TRUE, color = "black", alpha = 0.7
+  ) +
+  geom_half_violin(
+    data = subset(fireflies_clean, region == "south"),
+    aes(x = factor(1), y = firefly_count, fill = region),
+    side = "r", trim = TRUE, color = "black", alpha = 0.7
+  ) +
+  scale_fill_manual(values = c("north" = "#8EC9E8", "south" = "#F4A261")) +
+  coord_cartesian(ylim = c(0, 50)) +   # y-axis capped at 50
+  labs(
+    title = "Firefly Abundance: North vs South",
+    x = NULL,
+    y = "Firefly Count"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 16, face = "bold", hjust = 0.5),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+  )
+```
+
+## T-test
+
+We ran a t-test to see if the difference in firefly counts between the north and south is statistically significant. It compares the two groups and gives a result that tells us whether any difference real or just due to chance.
+
+```{r}
+# Read the dataset
+fireflies <- read.csv("Copy of firefliesUtah - Usable Data.csv")
+
+# Clean up column names
+colnames(fireflies) <- c("FireflyCount", "Region")
+
+# Make sure Region is a factor
+fireflies$Region <- factor(fireflies$Region, levels = c("north", "south"))
+
+# Run two-sample t-test
+t_test_result <- t.test(FireflyCount ~ Region, data = fireflies)
+
+# View the results
+t_test_result
+```
+
 # Discussion
 
-## Intrepetation of Plot
+## Intrepetation of Plots
+
+Both our box plot and split violin plot indicate that northern Utah counties have a higher abundance of fireflies compared to southern counties. While the overall variation between regions isn’t large, the difference is still clearly noticeable. We capped the firefly count at 50 because a few extreme outliers skewed the graphs, making it difficult to interpret the overall trends. Additionally, we removed a few data points that were either from another state or located on the boundary between northern and southern Utah, where assigning them to a region was uncertain, as well as points with firefly abundance over 50. The box plot provided a quick overview and comparison of the data, while the split violin plot offered a more detailed visualization, showing the distribution and density of firefly counts.
+
+## Intrepetation of T-test
+
+Our t-test results were not statistically significant, with a p-value of 0.2083. This means we cannot confidently come to the conclusion that the difference in firefly abundance between northern and southern Utah counties is not due to chance. Although the data suggest a difference, it may simply be random variation. The mean number of fireflies in northern counties was 13.81, while southern counties had a mean of 43.10. Our mean values differ from what our graph shows because the t-test includes the outlier points that we took out previously in the graph. There are a couple points in the south counties that have 100 to 1000 observed fireflies and those are the points that throw off the mean. We decided to keep the points in however to have more accurate data.
 
 # Conclusion
 
+In this study, we examined regional differences in firefly abundance across northern and southern Utah counties. Both the box plot and split violin plot suggested that northern counties had higher firefly counts than southern counties, consistent with our hypothesis that cooler, wetter northern habitats provide more suitable conditions for fireflies. However, our t-test results were not statistically significant (p = 0.2083), indicating that we cannot confidently rule out chance as the reason for the observed difference.
+
+Despite this, the clear difference in mean counts, 43.1 in the south versus 13.8 in the north, despite being different from our hypothesis, highlights a potential ecological pattern worth further investigation. Future studies with larger sample sizes and more precise regional assignment could help confirm these trends and inform local conservation efforts. There are a few limitations to our study the main one being the data we received wasn't very accurate, the firefly abundance were based off of an estimation. Overall, while our results were inconclusive, they provide a valuable foundation for future research on how regional environmental factors influence firefly populations in Utah.  
+
 # References
+1. ChatGPT. OpenAI, version Jan 2025. Used as a reference for functions such as plot() and to correct syntax errors. Accessed `r Sys.Date()`
+
+2. Evans, T. R., Salvatore, D., van de Pol, M., & Musters, C. J. M. (2018). Adult firefly abundance is linked to weather during the larval stage in the previous year. Ecological Entomology, 44(2), 265–273. https://doi.org/10.1111/een.12702
+
+3. Lewis, S. M., Jusoh, W. F. A., Walker, A. C., Fallon, C. E., Joyce, R., & Yiu, V. (2024). Illuminating Firefly Diversity: Trends, Threats and Conservation Strategies. Insects, 15(1), 71. https://doi.org/10.3390/insects15010071
