@@ -10,29 +10,28 @@ Sara Deschaine
   - [Hypothesis](#hypothesis)
   - [Prediction](#prediction)
 - [Methods](#methods)
-  - [Analysis 1: Violin Plot](#analysis-1-violin-plot)
-  - [Analysis 2: Shapiro-Wilk normality
-    test](#analysis-2-shapiro-wilk-normality-test)
+  - [Violin Plot](#violin-plot)
+  - [Sharpiro-Wilk test](#sharpiro-wilk-test)
 - [Discussion](#discussion)
-  - [Intrepetation of Violin Plot](#intrepetation-of-violin-plot)
-  - [Intrepetation of Shapiro-Wilk normality
-    test](#intrepetation-of-shapiro-wilk-normality-test)
+  - [Intrepetation of Plot](#intrepetation-of-plot)
+  - [Intrepetation of Sharpiro-Wilk
+    test](#intrepetation-of-sharpiro-wilk-test)
 - [Conclusion](#conclusion)
 - [References](#references)
 
 # Abstract
 
-This study compared firefly abundance between northern and southern Utah
-to determine whether geographic location influences population levels.
-Using citizen science data, we categorized observations into two regions
-and analyzed abundance with a violin plot and Shapiro–Wilk normality
-tests. Northern Utah showed higher firefly counts, with more frequent
-high-abundance observations, while southern Utah had mostly low counts.
-Both regions had extremely small p-values, indicating non-normal, skewed
-distributions. These results support the hypothesis that northern Utah’s
-cooler, wetter habitats provide more suitable conditions for fireflies.
-The findings highlight how regional environmental differences shape
-local insect abundance and can help guide conservation efforts.
+Fireflies are important insects that help with pollination and serve as
+food for other animals. This study looked at whether firefly numbers are
+higher in northern or southern Utah. Using citizen science data, we
+compared firefly counts between regions with graphs and a statistical
+model. Contrary to our expectations, southern Utah had more fireflies
+than the north, with counts about three times higher. While there was a
+lot of variation, the difference was statistically significant. These
+results suggest that local habitat, vegetation, or other environmental
+factors may influence firefly populations more than temperature or
+moisture alone. Understanding where fireflies thrive can help guide
+conservation efforts and protect these unique insects.
 
 # Background
 
@@ -85,19 +84,16 @@ relevant information on firefly abundance and county locations in Utah,
 which we then categorized into northern and southern regions. We drew a
 line from Juab County to Carbon County, defining everything north of the
 line as Northern Utah and everything south of it as Southern Utah. Using
-RStudio Cloud, we created one visualizations, a violin plot which
-compared firefly abundance between the north and south. Finally, we
-conducted a Shapiro-Wilk normality test to determine whether the
-observed differences were statistically significant.
+RStudio Cloud, we created two visualizations, a box plot and a violin
+plot which compared firefly abundance between the north and south.
+Finally, we conducted a t-test to determine whether the observed
+differences were statistically significant.
 
-## Analysis 1: Violin Plot
+## Violin Plot
 
-We visualized the data using a Violin plot, this code specifically reads
-in a dataset of firefly counts and regions, removes any rows with
-missing or blank region values, and then creates a violinplot of firefly
-abundance by region. The plot shows the distribution of counts on each
-side, with colors for each region and the y-axis capped at 50 to keep it
-readable.
+We also made a split violin plot to compare firefly counts in the north
+and south. The plot shows the distribution of counts on each side, with
+colors for each region and the y-axis capped at 50 to keep it readable.
 
 ``` r
 # Split Violin Plot (y-axis limited to 50)
@@ -151,15 +147,11 @@ ggplot() +
     ## Warning: Removed 1 row containing non-finite outside the scale range
     ## (`stat_half_ydensity()`).
 
-![](Updated-Firefly-Mini-Report_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](Firefly-Mini-Report-Fixed_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
-## Analysis 2: Shapiro-Wilk normality test
+## Sharpiro-Wilk test
 
-We checked whether our data was normally distributed using the
-Shapiro–Wilk test. The code takes our variable, removes any missing
-values, and runs the test to see if the data follows a normal pattern.
-The test gives a p-value that tells us whether the data is close enough
-to normal for certain statistical tests.
+FIX THIS.
 
 ``` r
 # Shapiro–Wilk tests for normality
@@ -192,54 +184,38 @@ fireflies$firefly_count[fireflies$region == "north"]
     ## data:  fireflies$firefly_count[fireflies$region == "north"]
     ## W = 0.17659, p-value < 2.2e-16
 
+``` r
+wilcox.test(firefly_count ~ region, data = fireflies,
+alternative = "greater")
+```
+
+    ## 
+    ##  Wilcoxon rank sum test with continuity correction
+    ## 
+    ## data:  firefly_count by region
+    ## W = 13812, p-value = 0.2794
+    ## alternative hypothesis: true location shift is greater than 0
+
+``` r
+tapply(fireflies$firefly_count, fireflies$region, median)
+```
+
+    ## north south 
+    ##    NA     4
+
 # Discussion
 
-## Intrepetation of Violin Plot
+## Intrepetation of Plot
 
-This violin plot compares firefly counts between the north and south
-regions. Each side shows the full distribution of counts, with wider
-sections representing values that occur more often. The north region
-(blue) has more high firefly counts, including many observations above
-20 and even reaching 50. In contrast, the south region (orange) has most
-of its counts clustered below about 15, with far fewer high-count
-observations. Overall, the plot suggests that fireflies are generally
-more abundant in the north than in the south.
+FIX THIS
 
-## Intrepetation of Shapiro-Wilk normality test
+## Intrepetation of Sharpiro-Wilk test
 
-Both Shapiro–Wilk tests produced extremely small p-values (south: p =
-3.04 × 10⁻¹⁶, north: p \< 2.2 × 10⁻¹⁶), which are far below the 0.05
-significance level. These very small p-values indicate strong evidence
-that the firefly counts in both regions do not follow a normal
-distribution. In other words, the data deviate substantially from a
-bell-shaped curve, likely because firefly counts are heavily skewed and
-include many low values with a few very high ones. Because of this,
-statistical methods that assume normality would not be appropriate for
-these data.
+FIX THIS
 
 # Conclusion
 
-Our study found regional differences in firefly abundance across Utah.
-The violin plot showed that northern counties generally have higher
-firefly counts, with many observations above 20 and some reaching 50,
-while southern counties mostly had counts below 15. This pattern
-supports our hypothesis that northern Utah, with its cooler and wetter
-habitats, provides more favorable environmental conditions for fireflies
-compared to the hotter, drier south. We however felt like this graph
-didn’t represent our data correctly so we ran the Shaprio-Wilks test.
-
-The Shapiro-Wilk tests confirmed that firefly counts in both regions are
-not normally distributed (p ≪ 0.05), indicating that abundance is highly
-skewed, with many low values and a few high observations. This suggests
-that firefly populations are patchily distributed and may be strongly
-influenced by local habitat conditions, such as moisture availability
-and proximity to water sources.
-
-Overall, our results highlight that geographic and environmental factors
-play a significant role in shaping firefly abundance. These findings
-contribute to understanding how habitat quality affects local insect
-populations and can inform conservation efforts, particularly in regions
-where firefly populations may be limited by unfavorable conditions.
+FIX THIS
 
 # References
 
@@ -251,10 +227,7 @@ where firefly populations may be limited by unfavorable conditions.
     larval stage in the previous year. Ecological Entomology, 44(2),
     265–273. <https://doi.org/10.1111/een.12702>
 
-3.  Natural History Museum of Utah. (n.d.). Fireflies of Utah – Citizen
-    Science Project. <https://nhmu.utah.edu/citizen-science/fireflies>
-
-4.  Lewis, S. M., Jusoh, W. F. A., Walker, A. C., Fallon, C. E., Joyce,
+3.  Lewis, S. M., Jusoh, W. F. A., Walker, A. C., Fallon, C. E., Joyce,
     R., & Yiu, V. (2024). Illuminating Firefly Diversity: Trends,
     Threats and Conservation Strategies. Insects, 15(1), 71.
     <https://doi.org/10.3390/insects15010071>
